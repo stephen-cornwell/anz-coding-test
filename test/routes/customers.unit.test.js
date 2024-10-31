@@ -103,6 +103,34 @@ describe('Customer API Endpoints', function () {
         'lastname is required.',
         'address is required.'
       ]);
-    });    
+    });
+    
+    it('should return a server error when customerdb calls fail', async function () {
+      // Created in the dummy "production" data in customerdb.js
+      const customer = {
+        employeeId: 1,
+        firstname: 'Alice',
+        lastname: 'Johnson',
+        address: '789 Pine St'
+      };
+      createStub.rejects(new Error('DATABASE ERROR'));
+  
+      const response = await app.inject({
+        method: 'POST',
+        url: '/customers',
+        payload: customer
+      });
+  
+      const payload = JSON.parse(response.payload);
+  
+      expect(response.statusCode).to.equal(500);
+      expect(payload).to.have.property('fault');
+      expect(payload.fault.code).to.equal('internalError');
+      expect(payload.fault.httpStatus).to.equal(500);
+      expect(payload.fault.message).to.equal('An internal error was encountered processing the request');
+      expect(payload.fault.failures).to.have.all.members([
+        'DATABASE ERROR'
+      ]);
+    });
   });
 });
