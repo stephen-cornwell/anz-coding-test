@@ -1,6 +1,6 @@
 'use strict'
 
-const { format } = require('date-fns');
+import { format } from 'date-fns';
 
 function createBadRequestResponse(errors) {
   return {
@@ -14,7 +14,7 @@ function createBadRequestResponse(errors) {
   };
 }
 
-module.exports = async function (fastify, _opts) {
+export default async function (fastify, _opts) {
 
   fastify.get('/customers/:id', async (request, reply) => {
     const { id } = request.params;
@@ -26,6 +26,9 @@ module.exports = async function (fastify, _opts) {
     
     // Retrieve customer.
     const customer = await fastify.customerdb.getById(id);
+
+    if (!customer) return reply.status(404).send();
+
     reply.send(customer);
   });
 
@@ -45,15 +48,8 @@ module.exports = async function (fastify, _opts) {
     }
 
     // Store customer.
-    try {
-      const insertedId = await fastify.customerdb.create({ employeeId, firstname, lastname, address });
-      reply.status(201).send({ message: 'Customer created successfully', customerId: insertedId });
-    } catch (err) {
-      if (err.message.includes('SQLITE_CONSTRAINT')) {
-        return reply.status(400).send(createBadRequestResponse(['A customer with that employee id already exists']));
-      }
-      
-      throw err;
-    }
+    await fastify.customerdb.create({ employeeId, firstname, lastname, address });
+
+    reply.status(201).send();
   });
 };

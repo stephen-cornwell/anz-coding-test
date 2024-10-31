@@ -1,14 +1,16 @@
 {
-
+  "type": "module",
   "name": "testproject",
   "version": "1.0.0",
   "description": "This project was bootstrapped with Fastify-CLI.",
-  "main": "app.js",
+  "exports": "./app.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "mocha test/**/*.test.js",
+    "test:unit": "mocha test/**/*.unit.test.js",
+    "test:int": "mocha test/**/*.int.test.js",
     "start": "fastify start -l info app.js",
     "dev": "fastify start -w -l info -P app.js"
   },
@@ -24,13 +26,12 @@
     "fastify-plugin": "^5.0.0",
     "fastify-print-routes": "^4.0.0",
     "glob": "^11.0.0",
-    "help-me": "^5.0.0",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "chai": "^4.5.0",
-    "chai-http": "^4.4.0",
-    "mocha": "^10.8.2"
+    "chai": "^5.1.2",
+    "mocha": "^10.8.2",
+    "sinon": "^19.0.2"
   }
 }

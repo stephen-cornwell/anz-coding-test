@@ -1,37 +1,56 @@
-# Getting Started with [Fastify-CLI](https://www.npmjs.com/package/fastify-cli)
+# ANZ Coding Test : Customer API
 This project was bootstrapped with Fastify-CLI.
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+The application was bootstrapped with fastify-cli. 
 
-### `npm run dev`
+#### Data storage
+Sqlite, stored on the file system (customers.db in the root).
 
-To start the app in dev mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Data access is via the customerdb plugin. The plugin initializes some dummy data to make evaluating the test easier. 
 
-### `npm start`
+#### Error handling.
 
-For production mode
+Endpoints are allowing unhandled errors to bubble up to a global error handler configured in app.js. 
 
-### `npm run test`
-
-Run the test cases.
-
-## Learn More
-
-To learn Fastify, check out the [Fastify documentation](https://fastify.dev/docs/latest/).
-
-
-## Assumptions
+#### Assumptions
 
 The customer schema provided contains an "employeeId", but the email accompanying it refers to customer and customer id. For the purposes of this test I have assumed "employeeId" to be the primary key for a customer. In a real world scenario I would clarify this requirement before proceeding. 
 
+# Run
 
-## Process
+The application was build on Node v20.18.0
 
-The application was boostrapped with fastify-cli. 
+From the root directory run:
+```console 
+npm install
+```
+To install packages. 
 
-## Error handling.
+Then:
+```console
+npm run start
+```
+The app will start listening at [http://localhost:3000](http://localhost:3000).
 
-Endpoints are allowing unhandled errors to bubble up to a global error handler configured in app.js. 
+Customer endpoints are available at [http://localhost:3000/customers/](http://localhost:3000/customers/) as per the swagger spec.
+
+## Test
+
+Using Mocha, Chai and Sinon.
+
+Testing is not exhaustive, but meant to be indicative of understanding the tools. 
+
+Run all tests:
+```console
+npm run test
+```
+Run unit tests:
+```console
+npm run test:unit
+````
+Run integration tests:
+````console
+npm run test:int
+````

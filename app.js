@@ -1,30 +1,34 @@
 'use strict'
 
-const path = require('node:path');
-const AutoLoad = require('@fastify/autoload');
-const { format } = require('date-fns');
-const fastifyPrintRoutes = require("fastify-print-routes");
+import path from 'node:path';
+import autoload from '@fastify/autoload';
+import { format } from 'date-fns';
+import fastifyPrintRoutes from 'fastify-print-routes';
+import Fastify from 'fastify';
 
-// Pass --options via CLI arguments in command to enable these options.
-const options = {}
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-module.exports = async function (fastify, opts) {
-  await fastify.register(fastifyPrintRoutes, { colors: true });
+//export default async function (fastify, opts) {
+async function build (fastify, opts) {
+  if (fastify == null) fastify = Fastify(opts);
+  
+  //await fastify.register(fastifyPrintRoutes, { colors: true });
   // Place here your custom code!
 
   // Do not touch the following lines
-
   // This loads all plugins defined in plugins
   // those should be support plugins that are reused
   // through your application
-  fastify.register(AutoLoad, {
+  fastify.register(autoload, {
     dir: path.join(__dirname, 'plugins'),
     options: Object.assign({}, opts)
   })
 
   // This loads all plugins defined in routes
   // define your routes in one of these
-  fastify.register(AutoLoad, {
+  fastify.register(autoload, {
     dir: path.join(__dirname, 'routes'),
     options: Object.assign({}, opts)
   })
@@ -43,6 +47,10 @@ module.exports = async function (fastify, opts) {
       }
     });
   })
+
+  return fastify;
 }
 
-module.exports.options = options
+export default build;
+export const options = {};
+
