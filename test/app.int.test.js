@@ -11,15 +11,14 @@ describe('Integration Tests', function () {
   before(async function () {
     app = await build(Fastify());
   });
-  
+
   after(async function () {
     await app.close();
   });
 
   it('should create the customer database', async function () {
-    const customer = { employeeId: 1, firstname: 'Adam', lastname: 'Smith', address: '123 Main St' };
-
-    const response = await app.inject({
+    
+    await app.inject({
       method: 'GET',
       url: '/customers/1'
     });

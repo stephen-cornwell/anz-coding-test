@@ -32,6 +32,10 @@ Then:
 ```console
 npm run start
 ```
+or 
+```console
+npm run dev
+```
 The app will start listening at [http://localhost:3000](http://localhost:3000).
 
 Customer endpoints are available at [http://localhost:3000/customers/](http://localhost:3000/customers/) as per the swagger spec.
